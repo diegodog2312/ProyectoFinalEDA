@@ -129,3 +129,6 @@ printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t NOMBRE D
 getchar();
 
 } //main
+
+
+//DANIELA NICOLAS 06/06/2020
