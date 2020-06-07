@@ -47,7 +47,7 @@ void empleado(){
                                     puts("\n¿Cuál desea elegir?\n");
                                     //IMPRIMIR LISTA
                                     //elegir el libro 
-                                    puts("¿Cuantos libros desea elegir?");
+                                    puts("¿Cuantos libros desea agregar?");
                                     scanf("%i", &num);
                                     agregarExistencias(num);
                                     puts("Se agregaron %i existencia(s) correctamente", num);
