@@ -30,7 +30,8 @@ void empleado(){
                                             getchar();
                                             system("cls");
                                             puts("\n\tLibro eliminado correctamente\n\t");
-
+                                            getchar();
+                                            system("cls");
                                             puts("¿Desea seguir eliminando?(s/n)");
                                             scanf("%s", &volver);
                                             volver= tolower(volver);
@@ -43,7 +44,7 @@ void empleado(){
                                 case 'c':
                                     int num;
                                     system ("cls");
-                                    Buscar(titulo, autor, ISBN);
+                                    buscarLibro(titulo, autor, ISBN);
                                     puts("\n¿Cuál desea elegir?\n");
                                     //IMPRIMIR LISTA
                                     //elegir el libro 
@@ -83,19 +84,59 @@ void cliente(){
             switch(rc){
                                 case 'a':
                                     system("cls");
-                                    //ARGUMENTOS 
-                                    //print list 
+                                    printLibros();
+
                                 break;
 
                                 case 'b':
+                                    char libro, opc, volver;
                                     system("cls");
-                                    //argumentos
-                                    Buscar_libros();
+                                    do{
+                                        buscarLibro(titulo,autor,ISBN);
+                                        puts("¿Cuál desea elegir?");
+                                        printLibros();
+                                        //ELEGIR EL LIBRO
+                                        puts("¿Desea agregarlo al carrito?(s/n)");
+                                        scanf("%s", opc);
+                                        opc = tolower(opc);
+                                            if (opc == 's'){
+                                                agregar_al_carrito(libro);
+                                                getchar();
+                                                system("cls");
+                                                puts("Agregado al carrito correctamente");
+                                                puts("¿Desea seguir agregando?(s/n)");
+                                                scanf("%s", &volver);
+                                                volver = tolower(volver);
+                                            }
+                                        }  while(volver == 's');
+
+                                    puts("\n usted salió correctamente\n");
                                 break;
 
                                 case 'c':
+                                    char elim,respuesta,confirmar;
                                     system ("cls");
-                                    //print carrito 
+                                    printCarrito();
+                                    //Solo se va a imprimir el titulo
+                                    puts("\n Desea eliminar algún elemento del carrito(s/n) \n ");
+                                    scanf("%s",&elim);
+                                    if(elim == 's'){
+                                        eliminar_carrito();
+                                        print("Desea comprar o seguir navegando");
+                                        scanf("%s", &respuesta);
+                                        if(respuesta =='comprar'){
+                                            imprimir_carrito();
+                                            puts("¿Confirmar compra?(s/n)");
+                                            scanf("%s",&confirmar);
+                                            if(confirmar=='s'){
+                                            confirmar_compra();
+                                            generar_recibo();
+                                            puts("GRACIAS POR SU PREFERENCIA");
+                                            }
+                                        }else{
+                                            printf("Usted decidio salir");
+                                        }
+                                    }
                                 break;
 
                                 default:
