@@ -1,8 +1,8 @@
 #include<stdio.h>
 
 //MENU EMPLEADO
-void mempleado(){
-    char re, rme;
+void empleado(){
+    char re, rme, elim,volver;
     puts("\n\n\n\t\t\t BIENVENIDO A EMPLEADO \n\n\n");
     do{
     puts("\t ¿Qué desea hacer? \n \n\ta) Agregar un libro \n\tb) Dar de baja \n c) Agregar existencias \n\t ");
@@ -12,19 +12,47 @@ void mempleado(){
                                 case 'a':
                                     system("cls");
                                     //ARGUMENTOS 
-                                    Agregar_libro();
+                                    agregarLibro();
                                 break;
 
                                 case 'b':
                                     system("cls");
-                                    //ARGUMENTOS
-                                    Baja_libro();
+                                    do{
+                                    buscarLibro(titulo, autor, ISBN);
+                                    puts("\n¿Cuál desea elegir?\n");
+                                    //IMPRIMIR LISTA
+                                    //elegir el libro 
+                                    puts("\n ¿Desea eliminar? (s/n)\n");
+                                    scanf("%s", &elim);
+                                    elim = tolower(elim);
+                                        if (elim =='s'){
+                                            eliminarLibro();
+                                            getchar();
+                                            system("cls");
+                                            puts("\n\tLibro eliminado correctamente\n\t");
+
+                                            puts("¿Desea seguir eliminando?(s/n)");
+                                            scanf("%s", &volver);
+                                            volver= tolower(volver);
+                                        }
+                                    } while(volver=='s');
+                                    puts("\n usted salió correctamente\n");
+
                                 break;
 
                                 case 'c':
+                                    int num;
                                     system ("cls");
-                                    //ARGUMENTOS
-                                    Agregar_existencias();
+                                    Buscar(titulo, autor, ISBN);
+                                    puts("\n¿Cuál desea elegir?\n");
+                                    //IMPRIMIR LISTA
+                                    //elegir el libro 
+                                    puts("¿Cuantos libros desea elegir?");
+                                    scanf("%i", &num);
+                                    agregarExistencias(num);
+                                    puts("Se agregaron %i existencia(s) correctamente", num);
+
+
                                 break;
 
                                 default:
@@ -33,18 +61,19 @@ void mempleado(){
 
         puts("Desea volver a leer el Menu (s/n)?\n");
         scanf("%s",&rme);
-        rme=tolower(rme);
+        rme = tolower(rme);
         system("cls");
+
 
     } while(rme=='s');
 
-printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t NOMBRE DE LA EMPRESA \n\n\n\n\n");
-getchar();
+    printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t NOMBRE DE LA EMPRESA \n\n\n\n\n");
+    getchar();
 
 }
 
 //MENU CLIENTE 
-void mcliente(){
+void cliente(){
     char rc,rmc;
     puts("\n\n\n\t\t\t BIENVENIDO A CLIENTE\n\n\n");
         do{
@@ -87,7 +116,6 @@ getchar();
 }
 
 
-//MENU PRINCIPAL
 int main(){
     char respuesta, resp;
     puts("\n\n\n\n\tLa empresa --------- agradece su preferencia.\n\tEsperamos que nuestros servicios llenen sus expectativas.\n");
@@ -106,12 +134,12 @@ int main(){
             switch(respuesta){
                                 case 'a':
                                     system("cls");
-                                    mempleado();
+                                    empleado();
                                 break;
 
                                 case 'b':
                                     system("cls");
-                                    mcliente();
+                                    cliente();
                                 break;
 
                                 default:
@@ -130,5 +158,4 @@ getchar();
 
 } //main
 
-
-//DANIELA NICOLAS 06/06/2020
+//DANIELA NICOLAS 06-06-2020
