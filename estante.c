@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "estante.h"
+
 /*
- *Esta fncion crea un estante vacio
- */
+* Esta funcion crea un estante vacio
+*/
 estante *crear_estante(){
     estante *e = (estante*)malloc(sizeof(estante));
     e->head = NULL;
@@ -13,33 +14,74 @@ estante *crear_estante(){
     return e;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
 
 /*
- *Esta funcion elimina un estante Si está vacio
- */
+* Esta funcion elimina un estante si está vacio
+*/
 bool eliminar_estante(estante *e){
-    if(!estante_vacio(e))
-        vaciar_estante(e);
+    if(!estante_vacio(e)) vaciar_estante(e);
     free(e);
     return true;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
 
 /*
- *Esta funcion vacia estante
+ *Esta funcion vacia un estante
  */
 void vaciar_estante(estante *e){
 	if(estante_vacio(e)) return;
     dnodo *t = e->head;
     while(remover_ini(e));
-    e->num = 0;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
 
 /*
- *Esta funcion inserta al inicio del estante
- */
- bool insertar_ini(estante *e, libro *l){
+* Esta funcion pide los datos para crear un libro
+*/
+void pedir_libro(estante *e){
+    char titulo[50];
+    char autor[50];
+    char editorial[50];
+    int ISBN;
+    int formato_num;
+    bool formato;
+    int existencia;
+    int precio;    
+    printf("\tAGREGAR UN LIBRO");
+    printf("\nTitulo: ");
+    scanf("%s", titulo);
+    printf("\nAutor: ");
+    scanf("%s", autor);
+    printf("\nEditorial: ");
+    scanf("%s", editorial);
+    printf("\nISBN: ");
+    scanf("%d", &ISBN);
+    printf("\nFormato (1 = Tapa blanda, 2  = Tapa dura): ");
+    scanf("%d", &formato_num);
+    printf("\nExistencias: ");
+    scanf("%d", &existencia);
+    printf("\nPrecio: ");
+    scanf("%d", &precio);
+
+    if (formato_num-1){
+        formato = true;
+    } else {
+        formato = false;
+    }
+
+    libro b = crear_libro(titulo, autor, editorial, ISBN, formato, existencia, precio);    
+    insertar_fin(e, b);
+    printf("\n%s fue agregado correctamente\n", e->tail->libro.titulo);
+}
+//Diego 07/06/2020
+
+/*
+* Esta funcion inserta al inicio del estante
+*/
+bool insertar_ini(estante *e, libro l){
     if(e == NULL) return false;
     dnodo *nuevo = crear_dnodo(l);
     if(estante_vacio(e)){        
@@ -59,19 +101,20 @@ void vaciar_estante(estante *e){
     return true;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
 
 /*
- *Estafuncion insertar al final del estante
- */
- bool insertar_fin(estante *e, libro *l){
- 	if(e == NULL) return false;
+* Esta funcion inserta al final del estante
+*/
+bool insertar_fin(estante *e, libro l){
+	if(e == NULL) return false;
  	dnodo *nuevo = crear_dnodo(l);
- 	if(estante_vacio(e)){
- 		e->head = nuevo;
+	if(estante_vacio(e)){
+		e->head = nuevo;
         e->tail = nuevo;
         e->head->sig=e->head->prev=e->tail;
         e->tail->sig=e->tail->prev=e->head;
-        e->num =1;
+        e->num = 1;
         return true;
     }
     nuevo->prev = e->tail;
@@ -81,12 +124,13 @@ void vaciar_estante(estante *e){
     e->tail = nuevo;
     e->num++;
     return true;
- }
- //Mara 4/06/2020
- 
+}
+//Mara 4/06/2020
+//Diego 07/06/2020
+
 /*
- *Esta funcion elimina el libro al inicio del estante
- */
+* Esta funcion elimina un libro al inicio del estante
+*/
 bool remover_ini(estante *e){
     if(e == NULL || estante_vacio(e)) return false;
     if(e->head == e->tail){
@@ -105,9 +149,11 @@ bool remover_ini(estante *e){
     return true;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
+
 /*
- *Esta funcion elimina el libro al final del estante
- */
+* Esta funcion elimina un libro al final del estante
+*/
 bool remover_fin(estante *e){
 	if(e == NULL || estante_vacio(e)) return false;
     if(e->head == e->tail){
@@ -127,170 +173,272 @@ bool remover_fin(estante *e){
     return true;
 }
 //Mara 4/06/2020
+//Diego 07/06/2020
 
 /*
- *Esta funcion encuentra todos los libros con un mismo autor
- *Almacena los resultados en un estante temporal declarado en main
- */
-estante *buscar_autor(estante *e, char autor[]){
-	estante *t = crear_estante();
-	if(!estante_vacio(e)){
-		dnodo *n = e->head;
-		int aux = strlen(autor);
-		while (n->sig != e->head->sig){
-			if(strncmp(autor, n->libro.autor, aux)==0){//if (autor == n->dnodo->libro.autor){
-				insertar_ini(t, n->libro);
-			}else{
-				n = n->sig;
+* Esta funcion elimina un libro del estante
+*/
+bool eliminar_libro(estante *e){	
+	int op;
+	dnodo *t = buscar(e);	
+	if(t==NULL) return false;
+	printf("\n¿Esta seguro de eliminar este libro? (1 = si /2 = no): ");
+	scanf("%d", &op);
+	if(op==1){
+        if(t==e->head){
+            remover_ini(e);
+            return true;
+        }
+        if (t==e->tail){
+            remover_fin(e);
+            return true;
+        }
+        
+		dnodo *prev = t->prev;    
+		dnodo *next = t->sig;        
+		prev->sig = next;        
+		next->prev = prev;
+		t->sig = NULL;
+		t->prev = NULL;
+		borrar_dnodo(t);
+		e->num--;
+		printf("\nEliminado correctamente");
+	} else {
+		printf("\nCancelando...");
+	}	
+	return true;
+}
+//Diego 06/06/2020
+
+/*
+* Esta funcion aumenta o disminuye las existencias de un libro
+*/
+bool existencias(estante *e){	
+	int op;
+	int existencias;
+	printf("\tControl de existencias\n");	
+	printf("1) Agregar existencias\n");
+	printf("2) Quitar existencias\n");
+	printf("¿Que desea hacer?\n");
+    scanf("%d", &op);
+    setbuf(stdin, NULL);
+	if (op!=2 && op!=1) return false;	
+	
+	dnodo *l = buscar(e);
+	if (l==NULL) return false;	
+	
+	if(!estante_vacio(e)){	    		
+		if (op==1){						
+			printf("\n¿Cuantas existencias desea agregar? ");
+			scanf("%d",&existencias);
+            setbuf(stdin, NULL);            
+			l->libro.existencia = l->libro.existencia + existencias;
+			printf("\nSe agregaron %d existencias", existencias);		
+			return true;
+		} else{			
+			printf("\n¿Cuantas existencias desea eliminar? ");
+			scanf("%d",&existencias);
+			if(existencias>l->libro.existencia){
+				printf("\nError, fuera de rango");
+				return false;
+			} else {
+				l->libro.existencia = l->libro.existencia - existencias;
+				printf("\nSe quitaron %d existencias", existencias);						
+                return true;
 			}
 		}
-		if(t->num == 0){
-			printf("No hay libros de ese autor");
-			free(t);
-			return NULL;//crearía apuntador a nulo
-		}else return t;
 	}
-	printf("No hay libros en el estante");
-	free(t);
-	return NULL;//crearía apuntador a nulo
+    return false;
+	printf("\nEstante Vacio\n");	
 }
 //Mara 5/06/2020
+//Diego 06/06/2020
 
 /*
- *Esta funcion encuentra un libro por su ISBN
- *Devuelve un nodo con un libro dentro
- */
-dnodo *buscar_ISBN(estante *e, int ISBN){
-	if(!estante_vacio(e)){
-		dnodo *n = e->head;
-		while (n->sig != e->head->sig){
-			if (ISBN == n->libro.ISBN){
-				dnodo *t = crear_dnodo(n->libro);
-				return t;
-			}else{
-				n = n->sig;
-			}
-		}
-		printf("ISBN no valido");
-		return NULL;//crearía apuntador a nulo
-	}
-	printf("No hay libros en el estante");
-	return NULL;//crearía apuntador a nulo
-}
-//Mara 5/06/2020
-
-/*
- *Esta funcion encuentra todos los libros con un mismo titulo
- *Almacena los resultados en un estante temporal declarado en main
- */
-estante *buscar_titulo(estante *e, char titulo[]){
-	estante *t = crear_estante();
-	int aux = strlen(titulo);
-	if(!estante_vacio(e)){
-		dnodo *n = e->head;
-		while (n->sig != e->head->sig){
-			if(strncmp(titulo, n->libro.titulo, aux)==0){//if (titulo == n->dnodo->libro.titulo){
-				insertar_ini(t, n->libro);
-			}else{
-				n = n->sig;
-			}
-		}
-		if(t->num == 0){
-			printf("No hay libros con ese titulo");
-			free(t);
-			return NULL;//crearía apuntador a nulo
-		}else return t;
-	}
-	printf("No hay libros en el estante");
-	free(t);
-	return NULL;//crearía apuntador a nulo
-}
-//5/06/2020
-
-/*
- *Esta funcion aumenta(TRUE) o disminuye(FALSE) las existencias de un libro
- */
- bool existencias(estante *e, libro *l, bool num){
- 	if(!estante_vacio(e)){
-	  dnodo *aux = e->head;
-	  if (num){
-	    while (aux->sig != e->head->sig){
-			if (l == aux->libro){
-				aux->libro.num = aux->libro.num + 1;
-				return true;
-			}else{
-				aux = aux->sig;
-			}
-	  }
-	  return false;
-	  }	else{
-	  	while (aux->sig != e->head->sig){
-			if (l == aux->libro){
-				aux->libro.num = aux->libro.num - 1;
-				return true;
-			}else{
-				aux = aux->sig;
-			}
-	  }
-	  return false;
-	  }
-	 }
-	 printf("Estante Vacio");
-	 return false;
- }
- //Mara 5/06/2020
-/*
- *Esta funcion tiene un *dnodo auxiliar que recorre el estante una posicion
- *hacia adelante(TRUE) o atras(FALSE) desde cualquier posicion inicial dada
- *Si se quiere recorrer todo el estante se debe utilizar esta funcion en varias ocaciones
- *DEBE existir una variable que lleve la cuenta de las posiciones que avanza o retrocede en main
- */
-dnodo *recorrer_estante(estante *e, bool direccion, int pos){
-	if(estante_vacio(e)) return NULL; //Advertencia puede generar un apuntador a NULO
-	dnodo *aux1 = e->head;
-	int i = 1;
-	while((pos > 0)&& (pos <= e->num) && (pos <= i)){
-		aux1->sig = aux1;
-		i++;
-	}
-	if(direccion){
-		aux1 = aux1->sig;
-		pos = i;
-		return aux1;
-	}else{
-		aux1=aux1->prev;
-		pos = i;
-		return aux1;
-	}
+* Esta funcion se encarga de recorrer el estante
+* tanto hacia adelante como hacia atras
+*/
+bool recorrer_estante(estante *e){
+	if(e == NULL) return false;
+	if(estante_vacio(e)) return false;
+	dnodo *t = e->head;
+    int op=1;
+    int i=1;
+    printf("\n\tESTANTE\n");
+    printf("\nHay %d libros.\n", e->num);
+    while (op==1 || op==2){
+        system("clear");
+        printf("\t---Libro---\n");
+        printf("Titulo: %s \n", t->libro.titulo);
+        printf("Autor: %s \n", t->libro.autor);
+        printf("Editorial: %s \n", t->libro.editorial);
+        if(t->libro.formato) printf("Formato: Tapa Dura\n");
+        else printf("Foramto: Tapa Blanda\n");
+        printf("ISBN: %d \n", t->libro.ISBN);
+        printf("Existencias: %d \n", t->libro.existencia);
+        printf("Precio(mxn): %d \n", t->libro.precio);
+        printf("\n1 = Libro siguiente");
+        printf("\n2 = Libro anterior");
+        printf("\n3 = Salir");
+        printf("\nOpcion: ");
+        scanf("%d",&op);
+        if(op==1){
+            t = t->sig;        
+        }
+        if(op==2){
+            t = t->prev;            
+        }
+    }    
+    printf("\n\tFin estante\n");
+    return true;
 }
 //Mara 05/06/2020
- /*
- *Esta funcion nos dice si un estante esta vacío(TRUE)
- */
+//Diego 06/06/2020
+
+/*
+* Esta funcion nos dice si un estante esta vacío(TRUE)
+*/
 bool estante_vacio(estante *e){
 	if((e->head == NULL) && (e->tail == NULL)) return true;
     return false;
 }
- //Mara 5/06/2020
- /*
- *Esta funcion imprime un estante en la consola
- */
- void imprimir_estante(estante *e){
- 	if(e == NULL) return;
+//Mara 5/06/2020
+
+/*
+* Esta funcion imprime todo un estante en la consola
+*/
+void imprimir_estante(estante *e){	
+	if(e == NULL) return;
 	if(estante_vacio(e)) return;
 	dnodo *t = e->head;
-    printf("\n\tEstante\n");
-    for(int i=0; i < e->num-1; i++){
-        printf("Titulo: %s, ", t->libro.titulo);
-        printf("Autorr: %s, ", t->libro.autor);
-        printf("Editorial: %s, ", t->libro.editorial);
-        if(t->libro.formato) printf("Formato: Tapa Dura");
-        else printf("Foramto: Tapa Blanda");
-        printf("ISBN: %d, ", t->libro.ISBN);
-        printf("Existencias: %d, ", t->libro.existencia);
-        printf("Precio(mxn): %d, ", t->libro.precio);
+    printf("\n\tESTANTE\n");
+    printf("\nHay %d libros.\n", e->num);
+    for(int i=0; i <= e->num-1; i++){
+		printf("\t---Libro %d---\n", i+1);
+        printf("Titulo: %s \n", t->libro.titulo);
+        printf("Autor: %s \n", t->libro.autor);
+        printf("Editorial: %s \n", t->libro.editorial);
+        if(t->libro.formato) printf("Formato: Tapa Dura\n");
+        else printf("Foramto: Tapa Blanda\n");
+        printf("ISBN: %d \n", t->libro.ISBN);
+        printf("Existencias: %d \n", t->libro.existencia);
+        printf("Precio(mxn): %d \n", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFin estante\n");
- }
- //Mara 5/06/2020
+}
+//Mara 5/06/2020
+//Diego 07/06/2020
+
+/*
+* Esta funcion busca en el catalogo de libros
+*/
+dnodo* buscar(estante *l){		
+    bool op=true;
+    int opcion;
+    int no_coincidencias=0; 
+    int coincidencias[l->num];
+    int ISBN;
+    char c[50];
+    dnodo *t;
+    do{
+        printf("\nElija un libro:\n");
+        printf("1. Titulo\n");
+        printf("2. Autor\n");
+        printf("3. ISBN\n");
+        printf("¿Como desea buscar? ");
+        scanf("%d",&opcion);
+        switch (opcion){
+        case 1:
+            t = l->head;
+            printf("\nInserte el titulo del libro: ");
+            scanf("%s", &c);            
+            for(int i= 0; i<l->num; i++){
+                if(strncmp(c,t->libro.titulo,50)==0){
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                }
+                t = t->sig;
+            }               
+            op=true; 
+        break;
+        case 2:
+            t = l->head;
+            printf("\nInserte el autor del libro: ");
+            scanf("%s", &c);
+            for(int i= 0; i<l->num; i++){
+                if(strncmp(c,t->libro.autor,4)==0){
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                }
+                t = t->sig;
+            }
+            op = true;
+        break;            
+        case 3:
+            t = l->head;
+            printf("\nInserte el ISBN del libro: ");
+            scanf("%d", &ISBN);
+            for(int i= 0; i <l->num; i++){
+                if(ISBN==t->libro.ISBN){                    
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                }
+                t = t->sig;
+            }
+            op = true;
+        break;    
+        default:
+            printf("\nERROR, Vuelva a ingresar\n");
+            op = false;
+        break;
+        }
+    }while (op==false);    
+        //Cuando hay más de una coincidencia
+        if(no_coincidencias>1){
+            printf("Se ha encontrado mas de una coincidencia: \n");
+            int k;
+            for(k=0; k<no_coincidencias;k++){
+				t = search_dnodo_estante(l, coincidencias[k]);
+                printf("%i. Titulo: %s\n Autor: %s\n", k+1, t->libro.titulo, t->libro.autor);
+			}
+            printf("\n¿Cual es el que buscaba? : ");
+			scanf("%i", &k);  
+            t = search_dnodo_estante(l, coincidencias[k-1]);            
+            printf("\nTitulo: %s\n", t->libro.titulo);
+            printf("Autor: %s\n", t->libro.autor);
+            printf("ISBN: %d \n", t->libro.ISBN);
+            printf("Existencias: %d \n", t->libro.existencia);
+            return t;
+        //Cuando no se encontro ninguna coincidencia    
+        }else if(no_coincidencias==0){
+            printf("\nNo se encontraron coincidencias\n");
+            return NULL;
+        } else {
+        //Cuando se encuentra una sola coincidencia
+            t = search_dnodo_estante(l, coincidencias[0]);
+            printf("\nTitulo: %s\n", t->libro.titulo);
+            printf("Autor: %s\n", t->libro.autor);
+            printf("ISBN: %d \n", t->libro.ISBN);
+            printf("Existencias: %d \n", t->libro.existencia);
+            return t;
+        }            
+}
+//Diego 07/06/2020
+
+/*
+* Esta funcion busca un nodo
+*/
+dnodo* search_dnodo_estante(estante *l, int pos){
+    if(pos == 0) return l->head;
+    else if(pos == l->num-1) return l->tail;
+    else if(pos >0 && pos < l->num-1){
+        dnodo *t = l->head->sig;
+        for(int i=1; i<l->num-1; i++){
+            if(i==pos) return t;
+            t = t->sig;
+        }
+    }
+    return NULL;
+}
+//Diego 07/06/2020
