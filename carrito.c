@@ -3,112 +3,75 @@
 #include <string.h>
 #include "estante.h"
 #include "carrito.h"
-/*
- *Esta funcion crea un carrito vacio
- */
-carrito *crear_carrito(){
-	carrito *c = (carrito*)malloc(sizeof(carrito));
-	c->head = NULL;
-	c->tail = NULL;
-	c->num = 0;
-}
-//Mara 05/06/2020
-/*
- *Esta funcion elimina un carrito vacio
- */
-void eliminar_carrito(carrito *c){
-	if(!carrito_vacio(c)){
-		borrar_carrito(c);
-	}
-	free(c);
-}
-//Mara 05/06/2020
-/*
- *Esta funcion agrega un nodo con un libro al carrito REDUCE las unidades del estante
- *Comportamiento de pila agrega al inicio
- */
-bool agregar_al_carrito(estante *e, carrito *c, libro *l){
-	if (c == NULL) return false;
-	nodo *n = crear_nodo(l);
-	existencias(e, l, false);
-	if (carrito_vacio(c)){
-		c->head = c->tail = n;
-		c->num = 1;
-	}else{
-		n->sig = c->head;
-		c->head = n;
-		c->num ++;
-	}
-	return true;
-}
-//Mara 05/06/2020
-/*
- *Esta funcion elimina un nodo del carrito AUMENTA las unidades del estante
- *Comportamiento de cola elimina al inicio
- */
- bool quitar_del_carrito(estante *e, carrito *c){
-	if ((c == NULL) || (carrito_vacio(c))) return false;
-	nodo *n = c->head->sig;
-	existencias (e, n->libro, true);
-	borrar_nodo(c->head);
-	c->head = n;
-	c->num --;
-	return true;
-}
-//Mara 05/06/2020
-/*
- *Esta funcion Borra un nodo del carrito SIN ALTERAR las unidades del estante
- *Debe ser utilizada cuando la COMPRA YA HA SIDO CONFIRMADA
- *Comportamiento de cola elimina al inicio
- */
- void borrar_carrito(carrito *c){
-	if (c == NULL) return;
-	if (carrito_vacio(c)){
-		free(c);
-		return;
-	} 
-	nodo *n = c->head->sig;
-	borrar_nodo(c->head);
-	c->head = n;
-	c->num --;
-	return;
-}
-//Mara 05/06/2020
-/*
- *Esta funcion vacia completamente un carrito como si fuera una cola
- */
-bool vaciar_carrito(estante *e, carrito *c){
-	if(carrito_vacio(c))return true;
-	while(!carrito_vacio(c)){
-		quitar_del_carrito(e, c);
-	}
-	return true;
-}
-//Mara 05/06/2020
+
+float total=0; //Monto total de compra
 
 /*
- *Esta funcioion confima la compra(TRUE) e imprime el recibo de compra con el total
- */
-bool confirmar_compra(carrito *c){
-	char op;
-	printf("\n Desea confirmar su compra (s/n) ");
-	scanf(" %c",&op);
+* Esta funcion permite buscar en el catalogo
+* y agrega al carrito si se desea.
+*/
+bool buscar_carrito(carrito c, estante *e){
+	int op;
+	dnodo *n = buscar(e);
+	if(n == NULL) return false;
+	printf("\n¿Desea agregarlo al carrito? (1 = si, 2= no): ");
+	scanf("%d", &op);
+	if(op==1){
+		n->libro.existencia--;
+		bool b = agregar_al_carrito(c, n->libro);
+		if(b==false) return false;
+		printf("\nAgregado correctamente\n");
+	}
+	return true;
+}
+//Diego 07/06/2020
+
+/*
+* Esta funcion agrega un libro al carrito 
+* Comportamiento de pila agrega al inicio
+*/
+bool agregar_al_carrito(carrito c, libro l){
+	bool b = insertar_ini(c,l);	
+	if(b==false) return false;
+	int precio = l.precio;
+	total += precio;	
+	return true;
+}
+//Mara 05/06/2020
+//Diego 07/06/2020
+
+/*
+* Esta funcion elimina un libro del carrito 
+* Comportamiento de pila elimina al final
+*/
+bool borrar_del_carrito(carrito c){
+	int precio = c->tail->libro.precio;
+	bool b = remover_fin(c);
+	if(b==false) return false;
+	total = total -precio;
+	return true;
+}
+//Mara 05/06/2020
+//Diego 07/06/2020
+
+
+/*
+* Esta funcion confirma la compra e imprime el recibo de compra junto con el total
+*/
+bool confirmar_compra(carrito c){
+	int op;	
+	carrito r = crear_estante();
+	printf("\n¿Desea confirmar su compra? (1 = si /2 = no): ");
+	scanf("%d",&op);
 	switch (op){
-		case 's':
-			estante *r;
-			r = generar_recibo(c);
-			int total = 0;
-			int i = 1;
-			dnodo *aux = r->head;
-			while(i <= r->num){
-				total = aux->libro.precio;
-				aux->sig = aux;
-				i++;
-			}
-			imprimir_estante(r);
-			printf("\t\n Total (mxn): &d \n",total);
+		case 1:						
+			r = generar_recibo(c);				
+			printf("\nCOMPRA REALIZADA EXITOSAMENTE\n");
+			printf("\nRecibo de compra: \n");									
+			bool b = imprimir_carrito(r);
+			if(b==false) return false;
 			return true;
-		case 'n':
+		case 2:
 			return false;
 		default:
 			printf("\n Entrada no valida\n");
@@ -116,49 +79,77 @@ bool confirmar_compra(carrito *c){
 	}
 }
 //Mara 05/06/2020
+//Diego 07/06/2020
+
 /*
- *Esta funcion genera un apundador a un estante llamado recibo de compra
- *Extrayendo la información del carrito como si lo DESENCOLARA
- *Y al terminar elimina al carrito
- */
-estante *generar_recibo(carrito *c){
-	if ((c == NULL) || (carrito_vacio(c))) return NULL;//ADVERTENCIA puede crear un apuntador a NULO
-	estante *nuevo = crear_estante();
-	nodo *n = c->head;
-	while(n!=NULL){
+* Esta funcion genera un apundador a una lista que es el recibo de compra
+* Extrayendo la información del carrito como si lo DESENCOLARA
+*/
+carrito generar_recibo(carrito c){	
+	carrito nuevo = crear_estante();
+	dnodo *n = c->head;
+	for(int i=0; i<c->num; i++){
 		insertar_ini(nuevo, n->libro);
 		n = n->sig;
-	}
-	eliminar_carrito(c);
+	}	
+	return nuevo;
 }
 //Mara 05/06/2020
+//Diego 07/06/2020
+
 /*
- *Esta funcion valida si un carrito esta vacio (TRUE)
- */
-bool carrito_vacio(carrito *c){
-	if (c->head && c->tail == NULL) return true;
-	return false;
-}
-//Mara 05/06/2020
-/*
- *Esta funcion imprime un carrito
- */
-void imprimir_carrito(carrito *c){
-	if(c == NULL) return;
-	if(carrito_vacio(c)) return;
-	nodo *t = c->head;
-    printf("\n\tArticulos en el carrito\n");
-    for(int i=0; i < c->num-1; i++){
-        printf("Titulo: %s, ", t->libro.titulo);
-        printf("Autorr: %s, ", t->libro.autor);
-        printf("Editorial: %s, ", t->libro.editorial);
-        if(t->libro.formato) printf("Formato: Tapa Dura");
-        else printf("Foramto: Tapa Blanda");
-        printf("ISBN: %d, ", t->libro.ISBN);
-        printf("Existencias: %d, ", t->libro.existencia);
-        printf("Precio(mxn): %d, ", t->libro.precio);
+* Esta funcion imprime la compra final
+*/
+bool imprimir_carrito(carrito e){
+	if(e == NULL) return false;
+	if(estante_vacio(e)) return false;
+	dnodo *t = e->head;
+    printf("\n\tCARRITO:\n");
+    printf("\nHay %d libro(s).\n", e->num);
+    for(int i=0; i <= e->num-1; i++){
+		printf("\t---Libro %d---\n", i+1);
+        printf("Titulo: %s \n", t->libro.titulo);
+        printf("Autor: %s \n", t->libro.autor);
+        printf("Editorial: %s \n", t->libro.editorial);
+        if(t->libro.formato) printf("Formato: Tapa Dura\n");
+        else printf("Foramto: Tapa Blanda\n");
+        printf("ISBN: %d \n", t->libro.ISBN);        
+        printf("Precio(mxn): %d \n", t->libro.precio);
         t = t->sig;
     }
-    printf("\n\tFin carrito\n");
+    printf("\n\tFIN CARRITO\n");
+	printf("\nSubtotal(mxn): %.2f\n", total);
+	printf("TOTAL(IVA) (mxn): %.2f\n", total+total*0.16);
+	return true;
 }
-//MAra 05/06/2020
+//Diego 07/06/2020
+
+/*
+* Esta funcion imprime el carrito
+*/
+bool ver_carrito(carrito e){
+	if(e == NULL) return false;
+	if(estante_vacio(e)) return false;
+	dnodo *t = e->head;
+	int op;
+    printf("\n\tCARRITO:\n");
+    printf("\nHay %d libro(s).\n", e->num);
+    for(int i=0; i <= e->num-1; i++){
+		printf("\t---Libro %d---\n", i+1);
+        printf("Titulo: %s \n", t->libro.titulo);        
+        printf("Precio(mxn): %d \n", t->libro.precio);
+        t = t->sig;
+    }
+	printf("Subtotal(mxn): %.2f\n", total);
+	printf("¿Qué desa hacer?\n");
+	printf("1) Seguir comprando\n");
+	printf("2) Concluir compra\n");
+
+	scanf("%d", &op);
+	if(op==2){
+		bool b = confirmar_compra(e);
+		if(b==false) return false;
+	}
+	return true;
+}
+//Diego 07/06/2020
