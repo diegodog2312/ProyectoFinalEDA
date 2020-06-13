@@ -10,13 +10,13 @@ void empleado(){
         re=tolower(re);
             switch(re){
                                 case 'a':
-                                    system("cls");
+                                    system("clear");
                                     //ARGUMENTOS 
                                     agregarLibro();
                                 break;
 
                                 case 'b':
-                                    system("cls");
+                                    system("clear");
                                     do{
                                     buscarLibro(titulo, autor, ISBN);
                                     puts("\n¿Cuál desea elegir?\n");
@@ -28,10 +28,10 @@ void empleado(){
                                         if (elim =='s'){
                                             eliminarLibro();
                                             getchar();
-                                            system("cls");
+                                            system("clear");
                                             puts("\n\tLibro eliminado correctamente\n\t");
                                             getchar();
-                                            system("cls");
+                                            system("clear");
                                             puts("¿Desea seguir eliminando?(s/n)");
                                             scanf("%s", &volver);
                                             volver= tolower(volver);
@@ -43,7 +43,7 @@ void empleado(){
 
                                 case 'c':
                                     int num;
-                                    system ("cls");
+                                    system ("clear");
                                     buscarLibro(titulo, autor, ISBN);
                                     puts("\n¿Cuál desea elegir?\n");
                                     //IMPRIMIR LISTA
@@ -52,8 +52,7 @@ void empleado(){
                                     scanf("%i", &num);
                                     agregarExistencias(num);
                                     puts("Se agregaron %i existencia(s) correctamente", num);
-
-
+                    
                                 break;
 
                                 default:
@@ -63,8 +62,7 @@ void empleado(){
         puts("Desea volver a leer el Menu (s/n)?\n");
         scanf("%s",&rme);
         rme = tolower(rme);
-        system("cls");
-
+        system("clear");
 
     } while(rme=='s');
 
@@ -83,14 +81,14 @@ void cliente(){
         rc=tolower(rc);
             switch(rc){
                                 case 'a':
-                                    system("cls");
+                                    system("clear");
                                     printLibros();
 
                                 break;
 
                                 case 'b':
                                     char libro, opc, volver;
-                                    system("cls");
+                                    system("clear");
                                     do{
                                         buscarLibro(titulo,autor,ISBN);
                                         puts("¿Cuál desea elegir?");
@@ -102,7 +100,7 @@ void cliente(){
                                             if (opc == 's'){
                                                 agregar_al_carrito(libro);
                                                 getchar();
-                                                system("cls");
+                                                system("clear");
                                                 puts("Agregado al carrito correctamente");
                                                 puts("¿Desea seguir agregando?(s/n)");
                                                 scanf("%s", &volver);
@@ -115,7 +113,7 @@ void cliente(){
 
                                 case 'c':
                                     char elim,respuesta,confirmar;
-                                    system ("cls");
+                                    system ("clear");
                                     printCarrito();
                                     //Solo se va a imprimir el titulo
                                     puts("\n Desea eliminar algún elemento del carrito(s/n) \n ");
@@ -146,7 +144,7 @@ void cliente(){
         puts("Desea volver a leer el Menu (s/n)?\n");
         scanf("%s",&rmc);
         rmc=tolower(rmc);
-        system("cls");
+        system("clear");
 
     } while(rmc=='s');
 
@@ -161,10 +159,10 @@ int main(){
     char respuesta, resp;
     puts("\n\n\n\n\tLa empresa --------- agradece su preferencia.\n\tEsperamos que nuestros servicios llenen sus expectativas.\n");
     getchar();
-    system("cls");
+    system("clear");
     puts("\n\n\n\n\tEn esta plataforma usted podra comprar los libros que guste \n\t\t Podra ver nuestro catalogo\n\t\t etc");
     getchar();
-    system("cls");
+    system("clear");
 
      do{
         puts("\n\n\n\t\t\t BIENVENIDO\n\n\n");
@@ -174,12 +172,12 @@ int main(){
 
             switch(respuesta){
                                 case 'a':
-                                    system("cls");
+                                    system("clear");
                                     empleado();
                                 break;
 
                                 case 'b':
-                                    system("cls");
+                                    system("clear");
                                     cliente();
                                 break;
 
@@ -190,7 +188,7 @@ int main(){
         puts("Desea volver a leer el Menu (s/n)?\n");
         scanf("%s",&resp);
         resp=tolower(resp);
-        system("cls");
+        system("clear");
 
     } while(resp=='s');
 
