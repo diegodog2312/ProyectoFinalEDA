@@ -42,6 +42,10 @@ void imprimir_estante(estante *e);
 bool estante_vacio(estante *e);
 void pedir_libro(estante *e);
 
+//Manejar archivos
+void download(estante *l);
+void upload(estante *l);
+
 #endif
 // Mara 04/06/2020
 // Diego 06/06/2020
