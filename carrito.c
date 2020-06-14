@@ -127,7 +127,7 @@ bool imprimir_carrito(carrito e){
 /*
 * Esta funcion imprime el carrito
 */
-bool ver_carrito(carrito e){
+bool ver_carrito(carrito e, int *c){
 	if(e == NULL) return false;
 	if(estante_vacio(e)) return false;
 	dnodo *t = e->head;
@@ -141,13 +141,19 @@ bool ver_carrito(carrito e){
         t = t->sig;
     }
 	printf("Subtotal(mxn): %.2f\n", total);
-	printf("¿Qué desa hacer?\n");
-	printf("1) Seguir comprando\n");
-	printf("2) Concluir compra\n");
-
+	printf("\n¿Qué desa hacer?");
+	printf("\n1) Seguir comprando");
+	printf("\n2) Concluir compra");
+	printf("\n3) Eliminar último libro comprado del carrito");	
+	printf("\nOpcion: ");
 	scanf("%d", &op);
 	if(op==2){
 		bool b = confirmar_compra(e);
+		*c = 1;
+		if(b==false) return false;
+	}
+	if(op==3){
+		bool b = borrar_del_carrito(e);
 		if(b==false) return false;
 	}
 	return true;
