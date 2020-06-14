@@ -1,4 +1,3 @@
 # ProyectoFinalEDA
-Aquí vayan subiendo sus programas
-Ya todo está funcionando bien, si notan algo raro me avisan.
-Sólo falta el main.c
+Todos los programas ya funcionan perfectamente.
+Sólo falta el manual de usuario, la descripción de problema y la descripción de la solución.
