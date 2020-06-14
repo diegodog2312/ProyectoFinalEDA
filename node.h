@@ -28,6 +28,7 @@ dnodo *crear_dnodo(libro l);
 bool borrar_dnodo(dnodo *n);
 
 #endif
+
 //Daniel 02/06/2020
 //Mara 04/06/2020 
 //Diego 06/06/2020
