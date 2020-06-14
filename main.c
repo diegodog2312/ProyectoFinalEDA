@@ -1,193 +1,129 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include<string.h>
+#include "node.h"
+#include "carrito.h"
+#include "estante.h"
+
+int verificar_compra = 0; 
 
 //MENU EMPLEADO
-void empleado(){
-    char re, rme, elim,volver;
-    puts("\n\n\n\t\t\t BIENVENIDO A EMPLEADO \n\n\n");
+void empleado(estante *e){
+    int re, volver;
+    bool b;
+    printf("\n\n\n\t\t\t BIENVENIDO A EMPLEADO \n\n\n");
     do{
-    puts("\t ¿Qué desea hacer? \n \n\ta) Agregar un libro \n\tb) Dar de baja \n c) Agregar existencias \n\t ");
-        scanf("%s",&re);
-        re=tolower(re);
-            switch(re){
-                case 'a':
-                    system("clear");
-                    //ARGUMENTOS 
-                    agregarLibro();
-                    break;
-                case 'b':
-                    system("clear");
-                        do{
-                            buscarLibro(titulo, autor, ISBN);
-                            puts("\n¿Cuál desea elegir?\n");
-                            //IMPRIMIR LISTA
-                            //elegir el libro 
-                            puts("\n ¿Desea eliminar? (s/n)\n");
-                            scanf("%s", &elim);
-                            elim = tolower(elim);
-                                if (elim =='s'){
-                                    eliminarLibro();
-                                    getchar();
-                                    system("clear");
-                                    puts("\n\tLibro eliminado correctamente\n\t");
-                                    getchar();
-                                    system("clear");
-                                    puts("¿Desea seguir eliminando?(s/n)");
-                                    scanf("%s", &volver);
-                                    volver= tolower(volver);
-                                        }
-                                    } while(volver=='s');
-                                    puts("\n usted salió correctamente\n");
-                    break;
-                case 'c':
-                    int num;
-                    system ("clear");
-                    buscarLibro(titulo, autor, ISBN);
-                    puts("\n¿Cuál desea elegir?\n");
-                    //IMPRIMIR LISTA
-                    //elegir el libro 
-                    puts("¿Cuantos libros desea agregar?");
-                    scanf("%i", &num);
-                    agregarExistencias(num);
-                    puts("Se agregaron %i existencia(s) correctamente", num);
-                    break;
-                default:
-                    printf("Opcion invalida\n");
-            }
-        puts("Desea volver a leer el Menu (s/n)?\n");
-        scanf("%s",&rme);
-        rme = tolower(rme);
         system("clear");
-
-    } while(rme=='s');
-
-    printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t BIBLIOTEDA \n\n\n\n\n");
-    getchar();
-
+        printf("\t ¿Qué desea hacer? \n \n\t1) Agregar un libro \n\t2) Dar de baja \n\t3) Agregar existencias \n\t4) Salir ");
+        printf("\n\n\tOpcion: ");
+        scanf("%d",&re);        
+        switch(re){
+            case 1:
+                system("clear");
+                pedir_libro(e);                            
+                break;
+            case 2:
+                system("clear");
+                do{
+                    b = eliminar_libro(e);
+                    if(b==false) printf("ERROR");                                        
+                    printf("¿Desea seguir eliminando? (1 = si / 2 = no): ");
+                    scanf("%d", &volver);                    
+                    system("clear");
+                }while(volver==1);
+                printf("\n Usted salió correctamente\n");
+            break;
+            case 3:                
+                system ("clear");
+                b = existencias(e);                
+                if(b==false) printf("ERROR");                
+            break;
+            case 4:
+            break;
+            default:
+                printf("\nOpcion invalida\n");            
+        }        
+    } while(re !=4);
 }
 
 //MENU CLIENTE 
-void cliente(){
-    char rc,rmc;
-    puts("\n\n\n\t\t\t BIENVENIDO A CLIENTE\n\n\n");
-        do{
-    puts("\t ¿Qué desea hacer? \n \n\ta) Ver libros en venta \n\tb) Buscar libros\n c) Ver carrito \n\t ");
-        scanf("%s",&rc);
-        rc=tolower(rc);
-            switch(rc){
-                case 'a':
-                    system("clear");
-                    printLibros();
-                    break;
-                case 'b':
-                    char libro, opc, volver;
-                    system("clear");
-                    do{
-                        buscarLibro(titulo,autor,ISBN);
-                        puts("¿Cuál desea elegir?");
-                        printLibros();
-                        //ELEGIR EL LIBRO
-                        puts("¿Desea agregarlo al carrito?(s/n)");
-                        scanf("%s", opc);
-                        opc = tolower(opc);
-                            if (opc == 's'){
-                                agregar_al_carrito(libro);
-                                getchar();
-                                system("clear");
-                                puts("Agregado al carrito correctamente");
-                                puts("¿Desea seguir agregando?(s/n)");
-                                scanf("%s", &volver);
-                                volver = tolower(volver);
-                            }
-                    }  while(volver == 's');
-                    puts("\n usted salió correctamente\n");
-                    break;
-                    
-                case 'c':
-                    char elim,respuesta,confirmar;
-                    system ("clear");
-                    printCarrito();
-                    //Solo se va a imprimir el titulo
-                    puts("\n Desea eliminar algún elemento del carrito(s/n) \n ");
-                    scanf("%s",&elim);
-                        if(elim == 's'){
-                            eliminar_carrito();
-                            print("Desea comprar o seguir navegando");
-                            scanf("%s", &respuesta);
-                                if(respuesta =='comprar'){
-                                    imprimir_carrito();
-                                    puts("¿Confirmar compra?(s/n)");
-                                    scanf("%s",&confirmar);
-                                        if(confirmar=='s'){
-                                            confirmar_compra();
-                                            generar_recibo();
-                                            puts("GRACIAS POR SU PREFERENCIA");
-                                            }
-                                        }else{
-                                            printf("Usted decidio salir");
-                                        }
-                                    }
-                                break;
-
-                                default:
-                                    printf("Opcion invalida\n");
-                            }
-
-        puts("Desea volver a leer el Menu (s/n)?\n");
-        scanf("%s",&rmc);
-        rmc=tolower(rmc);
+void cliente(estante *e, carrito c){
+    int rc;   
+    bool b;
+    printf("\n\n\n\t\t\t BIENVENIDO A CLIENTE\n\n\n");
+    do{
         system("clear");
-
-    } while(rmc=='s');
-
-printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t NOMBRE DE LA EMPRESA \n\n\n\n\n");
-getchar();
-
-
+        printf("\t ¿Qué desea hacer? \n\n\t1) Ver libros en venta \n\t2) Buscar libros\n\t3) Ver carrito \n\t4) Salir");
+        printf("\n\n\tOpcion: ");
+        scanf("%d",&rc);        
+        switch(rc){
+            case 1:
+                system("clear");
+                b = recorrer_estante(e);
+                if(b==false) printf("ERROR");                          
+            break;
+            case 2:                
+                system("clear");    
+                b = buscar_carrito(c,e);
+                if(b==false) printf("ERROR");                
+            break;                
+            case 3:                
+                system ("clear");
+                ver_carrito(c, &verificar_compra);
+                if(verificar_compra == 1) return;
+            break;
+            case 4:
+            break;
+            default:
+                printf("\nOpcion invalida\n");
+        }                        
+    } while(rc!=4);    
 }
 
-
-int main(){
-    char respuesta, resp;
-    puts("\n\n\n\n\tLa empresa biblioteda agradece su preferencia.\n\tEsperamos que nuestros servicios llenen sus expectativas.\n");
-    getchar();
+//MAIN
+int main(){    
+    int respuesta;
+    estante *l = crear_estante();
+    download(l);    
+    carrito c = crear_estante();
     system("clear");
-    puts("\n\n\n\n\tEn esta plataforma usted podra comprar los libros que guste \n\t\t Podra ver nuestro catalogo\n\t\t etc");
+    printf("\n\n\tLa empresa bibliotEDA agradece su preferencia.\n\tEsperamos que nuestros servicios llenen sus expectativas.\n");
+    printf("\n\n\tEn esta plataforma usted podra comprar los libros que guste \n\t\t Podra ver nuestro catalogo\n\t\t y MAS");
+    printf("\n\n\tPresione enter para continuar... ");
     getchar();
-    system("clear");
-
-     do{
-        puts("\n\n\n\t\t\t BIENVENIDO\n\n\n");
-        puts("\t¿Cómo desea ingresar? \n \n\ta) Empleado \n\tb) Cliente \n ");
-        scanf("%s",&respuesta);
-        respuesta=tolower(respuesta);
-
-            switch(respuesta){
-                                case 'a':
-                                    system("clear");
-                                    empleado();
-                                break;
-
-                                case 'b':
-                                    system("clear");
-                                    cliente();
-                                break;
-
-                                default:
-                                    printf("Opcion invalida\n");
-                            }
-
-        puts("Desea volver a leer el Menu (s/n)?\n");
-        scanf("%s",&resp);
-        resp=tolower(resp);
+    do{
         system("clear");
-
-    } while(resp=='s');
-
-printf("\n\n\n\n\n\t\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t\t\t BIBLIOTEDA \n\n\n\n\n");
-getchar();
-
-} //main
-
+        printf("\n\n\n\t\t\t BIENVENIDO\n\n\n");
+        printf("\t¿Cómo desea ingresar? \n \n\t1) Empleado \n\t2) Cliente \n\t3) Salir");
+        printf("\n\nOpcion: ");
+        scanf("%d",&respuesta);
+        switch(respuesta){
+            case 1:
+                system("clear");
+                empleado(l);
+            break;
+            case 2:
+                system("clear");
+                cliente(l,c);
+                if (verificar_compra == 1){
+                    upload(l);
+                    eliminar_estante(l);
+                    return 0;
+                }
+            break;
+            case 3:
+            break;
+            default:
+                printf("\nOpcion invalida\n");
+        }    
+    } while(respuesta != 3);
+    printf("\n\n\n\t\tMuchas gracias, vuelva pronto\n\n\n\n\t\t\t BIBLIOTEDA \n\n\n\n\n");
+    upload(l);    
+    eliminar_estante(l);
+    eliminar_estante(c);    
+    return 0;
+} 
 //DANIELA NICOLAS 06-06-2020
 //Daniel 07-06-2020
-
+//Diego 13-06-2020
