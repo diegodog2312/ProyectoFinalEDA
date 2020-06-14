@@ -74,7 +74,7 @@ void pedir_libro(estante *e){
 
     libro b = crear_libro(titulo, autor, editorial, ISBN, formato, existencia, precio);    
     insertar_fin(e, b);
-    printf("\n%s fue agregado correctamente\n", e->tail->libro.titulo);
+    printf("\n%s fue agregado correctamente\n", e->tail->libro.titulo);        
 }
 //Diego 07/06/2020
 
@@ -263,11 +263,11 @@ bool recorrer_estante(estante *e){
 	if(estante_vacio(e)) return false;
 	dnodo *t = e->head;
     int op=1;
-    int i=1;
-    printf("\n\tESTANTE\n");
-    printf("\nHay %d libros.\n", e->num);
+    int i=1;    
     while (op==1 || op==2){
         system("clear");
+        printf("\n\tESTANTE\n");
+        printf("\nHay %d libros.\n", e->num);
         printf("\t---Libro---\n");
         printf("Titulo: %s \n", t->libro.titulo);
         printf("Autor: %s \n", t->libro.autor);
@@ -442,3 +442,57 @@ dnodo* search_dnodo_estante(estante *l, int pos){
     return NULL;
 }
 //Diego 07/06/2020
+
+//UPLOAD
+//Escribe los cambios que se hacen en el archivo de texto
+void upload(estante *l){ 
+    libro arreglo[l->num];
+    dnodo *t = l->head;
+    for(int i=0; i<l->num; i++){
+        strcpy(arreglo[i].titulo,t->libro.titulo);
+        strcpy(arreglo[i].autor,t->libro.autor);
+        strcpy(arreglo[i].editorial,t->libro.editorial);
+        arreglo[i].existencia = t->libro.existencia;
+        arreglo[i].ISBN = t->libro.ISBN;
+        arreglo[i].precio = t->libro.precio;
+        arreglo[i].formato = t->libro.formato;
+        t = t->sig;
+    }
+    FILE *F;
+    F = fopen("libreria.txt", "wb");
+    fwrite(&arreglo, sizeof(libro), l->num, F);
+    fclose(F);
+
+    FILE *I;
+    I = fopen("noLibros.txt", "wb"); //Es necesario el uso de otro archivo de texto para guardar el # de libros
+    fwrite(&l->num, sizeof(int), 1, I);
+    fclose(I);
+}
+//Diego 02/06/2020
+
+//DOWNLOAD
+//Descarga los libros del archivo y los pone en la lista
+void download(estante *l){    
+    vaciar_estante(l);    
+    
+    FILE *H;
+    int noLibros;
+    H = fopen("noLibros.txt", "rb");
+    fread(&noLibros, sizeof(int), 1, H); //Es necesario el uso de otro archivo de texto para guardar el # de libros
+    fclose(H);
+    
+    libro arreglo[noLibros];
+    libro b;
+
+    FILE *G;
+    G = fopen("libreria.txt", "rb");
+    fread(&arreglo,sizeof(libro), noLibros, G); 
+    fclose(G);
+
+    for(int i=0; i<noLibros; i++){
+        b = crear_libro(arreglo[i].titulo, arreglo[i].autor, arreglo[i].editorial, arreglo[i].ISBN, arreglo[i].formato, arreglo[i].existencia, arreglo[i].precio);
+        insertar_fin(l,b);
+    }
+
+}
+//Diego 02/06/2020
