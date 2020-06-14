@@ -17,7 +17,7 @@ estante *generar_recibo(carrito c);
 
 //De apoyo
 bool imprimir_carrito(carrito e);
-bool ver_carrito(carrito e);
+bool ver_carrito(carrito e, int *c);
 #endif
 
 //Mara 05/06/2020
