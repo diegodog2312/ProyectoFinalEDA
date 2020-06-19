@@ -52,11 +52,14 @@ void pedir_libro(estante *e){
     int precio;    
     printf("\tAGREGAR UN LIBRO");
     printf("\nTitulo: ");
-    scanf("%s", titulo);
+    getchar();
+    gets(titulo);
     printf("\nAutor: ");
-    scanf("%s", autor);
+    getchar();
+    gets(autor);
     printf("\nEditorial: ");
-    scanf("%s", editorial);
+    getchar();
+    gets(editorial);
     printf("\nISBN: ");
     scanf("%d", &ISBN);
     printf("\nFormato (1 = Tapa blanda, 2  = Tapa dura): ");
@@ -353,7 +356,7 @@ dnodo* buscar(estante *l){
       	    	t = l->head;
 		printf("\nInserte el titulo del libro: ");
 	        getchar();        
-		gets(c);
+		    gets(c);
 	        printf("Buscando %s ....\n",c);          
        	        for(int i= 0; i<l->num; i++){
 		    if(strncmp(c,t->libro.titulo,50)==0){
@@ -367,7 +370,7 @@ dnodo* buscar(estante *l){
 	    case 2:
 	        t = l->head;
 		printf("\nInserte el autor del libro: ");
-		getchar();        
+		        getchar();        
                	gets(c);
                 printf("Buscando %s ....\n",c);
 		for(int i= 0; i<l->num; i++){
