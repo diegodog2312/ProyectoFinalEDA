@@ -349,49 +349,53 @@ dnodo* buscar(estante *l){
         printf("¿Como desea buscar? ");
         scanf("%d",&opcion);
         switch (opcion){
-        case 1:
-            t = l->head;
-            printf("\nInserte el titulo del libro: ");
-            scanf("%s", &c);            
-            for(int i= 0; i<l->num; i++){
-                if(strncmp(c,t->libro.titulo,50)==0){
-                    coincidencias[no_coincidencias]=i;
-                    no_coincidencias++;
-                }
-                t = t->sig;
-            }               
-            op=true; 
-        break;
-        case 2:
-            t = l->head;
-            printf("\nInserte el autor del libro: ");
-            scanf("%s", &c);
-            for(int i= 0; i<l->num; i++){
-                if(strncmp(c,t->libro.autor,4)==0){
-                    coincidencias[no_coincidencias]=i;
-                    no_coincidencias++;
-                }
-                t = t->sig;
-            }
-            op = true;
-        break;            
-        case 3:
-            t = l->head;
-            printf("\nInserte el ISBN del libro: ");
-            scanf("%d", &ISBN);
-            for(int i= 0; i <l->num; i++){
-                if(ISBN==t->libro.ISBN){                    
-                    coincidencias[no_coincidencias]=i;
-                    no_coincidencias++;
-                }
-                t = t->sig;
-            }
-            op = true;
-        break;    
-        default:
-            printf("\nERROR, Vuelva a ingresar\n");
-            op = false;
-        break;
+	    case 1:
+      	    	t = l->head;
+		printf("\nInserte el titulo del libro: ");
+	        getchar();        
+		gets(c);
+	        printf("Buscando %s ....\n",c);          
+       	        for(int i= 0; i<l->num; i++){
+		    if(strncmp(c,t->libro.titulo,50)==0){
+		        coincidencias[no_coincidencias]=i;
+		        no_coincidencias++;
+		    }
+		    t = t->sig;
+		}               
+		op=true; 
+		break;
+	    case 2:
+	        t = l->head;
+		printf("\nInserte el autor del libro: ");
+		getchar();        
+               	gets(c);
+                printf("Buscando %s ....\n",c);
+		for(int i= 0; i<l->num; i++){
+		    if(strncmp(c,t->libro.autor,4)==0){
+		        coincidencias[no_coincidencias]=i;
+			no_coincidencias++;
+		    }
+		    t = t->sig;
+		}
+		op = true;
+	    break;            
+	    case 3:
+		t = l->head;
+		printf("\nInserte el ISBN del libro: ");
+		scanf("%d", &ISBN);
+		for(int i= 0; i <l->num; i++){
+		    if(ISBN==t->libro.ISBN){                    
+		        coincidencias[no_coincidencias]=i;
+		        no_coincidencias++;
+		    }
+		     t = t->sig;
+		}
+		op = true;
+	    break;    
+	    default:
+		printf("\nERROR, Vuelva a ingresar\n");
+		op = false;
+	    break;
         }
     }while (op==false);    
         //Cuando hay más de una coincidencia
@@ -464,8 +468,8 @@ void upload(estante *l){
     fclose(F);
 
     FILE *I;
-    I = fopen("noLibros.txt", "wb"); //Es necesario el uso de otro archivo de texto para guardar el # de libros
-    fwrite(&l->num, sizeof(int), 1, I);
+    I = fopen("noLibros.txt", "w"); //Es necesario el uso de otro archivo de texto para guardar el # de libros
+    fprintf(F, "%d\n", l->num);
     fclose(I);
 }
 //Diego 02/06/2020
@@ -477,8 +481,8 @@ void download(estante *l){
     
     FILE *H;
     int noLibros;
-    H = fopen("noLibros.txt", "rb");
-    fread(&noLibros, sizeof(int), 1, H); //Es necesario el uso de otro archivo de texto para guardar el # de libros
+    H = fopen("noLibros.txt", "r"); //Es necesario el uso de otro archivo de texto para guardar el # de libros    
+    fscanf(H,"%d",&noLibros);
     fclose(H);
     
     libro arreglo[noLibros];
