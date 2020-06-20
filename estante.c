@@ -54,11 +54,9 @@ void pedir_libro(estante *e){
     printf("\nTitulo: ");
     getchar();
     gets(titulo);
-    printf("\nAutor: ");
-    getchar();
+    printf("\nAutor: ");    
     gets(autor);
     printf("\nEditorial: ");
-    getchar();
     gets(editorial);
     printf("\nISBN: ");
     scanf("%d", &ISBN);
