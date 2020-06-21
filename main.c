@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<string.h>
-#include "nodo.h"
+#include "node.h"
 #include "carrito.h"
 #include "estante.h"
 
@@ -66,8 +66,7 @@ void cliente(estante *e, carrito c){
             case 2:
                 getchar();
                 system("clear");
-                b = buscar_carrito(c,e);
-                printf("Presione enter para continuar");
+                b = buscar_carrito(c,e);                        
             break;
             case 3:
                 system ("clear");
