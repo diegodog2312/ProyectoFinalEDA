@@ -42,18 +42,17 @@ bool agregar_al_carrito(carrito c, libro l){
 
 /*
 * Esta funcion elimina un libro del carrito 
-* Comportamiento de pila elimina al final
+* Comportamiento de pila: elimina el último libro en la lista
 */
 bool borrar_del_carrito(carrito c){
 	int precio = c->tail->libro.precio;
-	bool b = remover_fin(c);
+	bool b = remover_ini(c);
 	if(b==false) return false;
 	total = total -precio;
 	return true;
 }
 //Mara 05/06/2020
 //Diego 07/06/2020
-
 
 /*
 * Esta funcion confirma la compra e imprime el recibo de compra junto con el total
