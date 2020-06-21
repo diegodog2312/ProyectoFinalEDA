@@ -349,56 +349,55 @@ dnodo* buscar(estante *l){
         printf("3. ISBN\n");
         printf("¿Como desea buscar? ");
         scanf("%d",&opcion);
-        switch (opcion){
-	    case 1:
-      	    	t = l->head;
-		printf("\nInserte el titulo del libro: ");
-	        getchar();        
-		    gets(c);
-	        printf("Buscando %s ....\n",c);          
-       	        for(int i= 0; i<l->num; i++){
-		    if(strncmp(c,t->libro.titulo,50)==0){
-		        coincidencias[no_coincidencias]=i;
-		        no_coincidencias++;
-		    }
-		    t = t->sig;
-		}               
-		op=true; 
-		break;
-	    case 2:
-	        t = l->head;
-		printf("\nInserte el autor del libro: ");
-		        getchar();        
-               	gets(c);
+        switch (opcion){ 
+            case 1: 
+                t = l->head;
+                printf("\nInserte el titulo del libro: ");
+                getchar();        
+                gets(c);
+                printf("Buscando %s ....\n",c);          
+                for(int i= 0; i<l->num; i++){
+                    if(strncmp(c,t->libro.titulo,50)==0){
+                        coincidencias[no_coincidencias]=i;
+                        no_coincidencias++;
+                    }
+                    t = t->sig;
+                    }               
+                    op=true; 
+            break;
+            case 2:
+                t = l->head;
+                printf("\nInserte el autor del libro: ");
+                getchar();        
+                gets(c);
                 printf("Buscando %s ....\n",c);
-		for(int i= 0; i<l->num; i++){
-		    if(strncmp(c,t->libro.autor,4)==0){
-		        coincidencias[no_coincidencias]=i;
-			no_coincidencias++;
-		    }
-		    t = t->sig;
-		}
-		op = true;
-	    break;            
-	    case 3:
-		t = l->head;
-		printf("\nInserte el ISBN del libro: ");
-		scanf("%d", &ISBN);
-		for(int i= 0; i <l->num; i++){
-		    if(ISBN==t->libro.ISBN){                    
-		        coincidencias[no_coincidencias]=i;
-		        no_coincidencias++;
-		    }
-		     t = t->sig;
-		}
-		op = true;
-	    break;    
-	    default:
-		printf("\nERROR, Vuelva a ingresar\n");
-		op = false;
-	    break;
+                for(int i= 0; i<l->num; i++){
+                    if(strncmp(c,t->libro.autor,4)==0){
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                    }
+                    t = t->sig;
+                }
+                op = true;
+            break;            
+            case 3:
+                t = l->head;
+                printf("\nInserte el ISBN del libro: ");
+                scanf("%d", &ISBN);
+                for(int i= 0; i <l->num; i++){
+                    if(ISBN==t->libro.ISBN){                    
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                    }
+                t = t->sig;
+                }
+                op = true;
+            break;    
+            default:
+                printf("\nERROR, Vuelva a ingresar\n");
+                op = false;            
         }
-    }while (op==false);    
+    }while(op==false);    
         //Cuando hay más de una coincidencia
         if(no_coincidencias>1){
             printf("Se ha encontrado mas de una coincidencia: \n");
