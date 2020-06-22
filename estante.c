@@ -50,21 +50,21 @@ void pedir_libro(estante *e){
     bool formato;
     int existencia;
     int precio;    
-    printf("\tAGREGAR UN LIBRO");
-    printf("\nTitulo: ");
+    printf("\n\n\n\t\t\t AGREGAR UN LIBRO \n\n\n");
+    printf("\n\tTitulo: ");
     getchar();
     gets(titulo);
-    printf("\nAutor: ");    
+    printf("\n\tAutor: ");    
     gets(autor);
-    printf("\nEditorial: ");
+    printf("\n\tEditorial: ");
     gets(editorial);
-    printf("\nISBN: ");
+    printf("\n\tISBN: ");
     scanf("%d", &ISBN);
-    printf("\nFormato (1 = Tapa blanda, 2  = Tapa dura): ");
+    printf("\n\tFormato (1 = Tapa blanda, 2  = Tapa dura): ");
     scanf("%d", &formato_num);
-    printf("\nExistencias: ");
+    printf("\n\tExistencias: ");
     scanf("%d", &existencia);
-    printf("\nPrecio: ");
+    printf("\n\tPrecio: ");
     scanf("%d", &precio);
 
     if (formato_num-1){
@@ -72,10 +72,10 @@ void pedir_libro(estante *e){
     } else {
         formato = false;
     }
-
     libro b = crear_libro(titulo, autor, editorial, ISBN, formato, existencia, precio);    
     insertar_fin(e, b);
-    printf("\n%s fue agregado correctamente\n", e->tail->libro.titulo);        
+    printf("\n\n\n\t\t\t %s fue agregado correctamente\n", e->tail->libro.titulo);    
+    getchar();
 }
 //Diego 07/06/2020
 
@@ -183,7 +183,7 @@ bool eliminar_libro(estante *e){
 	int op;
 	dnodo *t = buscar(e);	
 	if(t==NULL) return false;
-	printf("\n¿Esta seguro de eliminar este libro? (1 = si /2 = no): ");
+	printf("\n\n\t¿Esta seguro de eliminar este libro? (1 = si /2 = no): ");
 	scanf("%d", &op);
 	if(op==1){
         if(t==e->head){
@@ -203,11 +203,12 @@ bool eliminar_libro(estante *e){
 		t->prev = NULL;
 		borrar_dnodo(t);
 		e->num--;
-		printf("\nEliminado correctamente");
+		printf("\n\n\tEliminado correctamente");
 	} else {
-		printf("\nCancelando...");
+		printf("\n\n\tCancelando...");
 	}	
 	return true;
+    getchar();
 }
 //Diego 06/06/2020
 
@@ -217,10 +218,10 @@ bool eliminar_libro(estante *e){
 bool existencias(estante *e){	
 	int op;
 	int existencias;
-	printf("\tControl de existencias\n");	
-	printf("1) Agregar existencias\n");
-	printf("2) Quitar existencias\n");
-	printf("¿Que desea hacer?\n");
+	printf("\t\t\t\nControl de existencias\n");	
+	printf("\t1) Agregar existencias\n");
+	printf("\t2) Quitar existencias\n");
+	printf("\t¿Que desea hacer?\n");
     scanf("%d", &op);
     setbuf(stdin, NULL);
 	if (op!=2 && op!=1) return false;	
@@ -230,27 +231,27 @@ bool existencias(estante *e){
 	
 	if(!estante_vacio(e)){	    		
 		if (op==1){						
-			printf("\n¿Cuantas existencias desea agregar? ");
+			printf("\n\t¿Cuantas existencias desea agregar? ");
 			scanf("%d",&existencias);
             setbuf(stdin, NULL);            
 			l->libro.existencia = l->libro.existencia + existencias;
-			printf("\nSe agregaron %d existencias", existencias);		
+			printf("\n\tSe agregaron %d existencias", existencias);		
 			return true;
 		} else{			
-			printf("\n¿Cuantas existencias desea eliminar? ");
+			printf("\n\t¿Cuantas existencias desea eliminar? ");
 			scanf("%d",&existencias);
 			if(existencias>l->libro.existencia){
-				printf("\nError, fuera de rango");
+				printf("\n\tError, fuera de rango");
 				return false;
 			} else {
 				l->libro.existencia = l->libro.existencia - existencias;
-				printf("\nSe quitaron %d existencias", existencias);						
+				printf("\n\tSe quitaron %d existencias", existencias);						
                 return true;
 			}
 		}
 	}
     return false;
-	printf("\nEstante Vacio\n");	
+	printf("\n\t\tEstante Vacio\n");	
 }
 //Mara 5/06/2020
 //Diego 06/06/2020
@@ -267,21 +268,21 @@ bool recorrer_estante(estante *e){
     int i=1;    
     while (op==1 || op==2){
         system("clear");
-        printf("\n\tESTANTE\n");
-        printf("\nHay %d libros.\n", e->num);
-        printf("\t---Libro---\n");
-        printf("Titulo: %s \n", t->libro.titulo);
-        printf("Autor: %s \n", t->libro.autor);
-        printf("Editorial: %s \n", t->libro.editorial);
-        if(t->libro.formato) printf("Formato: Tapa Dura\n");
-        else printf("Foramto: Tapa Blanda\n");
-        printf("ISBN: %d \n", t->libro.ISBN);
-        printf("Existencias: %d \n", t->libro.existencia);
-        printf("Precio(mxn): %d \n", t->libro.precio);
-        printf("\n1 = Libro siguiente");
-        printf("\n2 = Libro anterior");
-        printf("\n3 = Salir");
-        printf("\nOpcion: ");
+        printf("\n\t\tESTANTE\n");
+        printf("\tHay %d libros.\n\n", e->num);
+        printf("\t\t---Libro---");
+        printf("\n\tTitulo: %s ", t->libro.titulo);
+        printf("\n\tAutor: %s ", t->libro.autor);
+        printf("\n\tEditorial: %s ", t->libro.editorial);
+        if(t->libro.formato) printf("\n\tFormato: Tapa Dura");
+        else printf("\n\tFormato: Tapa Blanda");
+        printf("\n\tISBN: %d ", t->libro.ISBN);
+        printf("\n\tExistencias: %d ", t->libro.existencia);
+        printf("\n\tPrecio(mxn): %d ", t->libro.precio);
+        printf("\n\n\t1 = Libro siguiente");
+        printf("\n\t2 = Libro anterior");
+        printf("\n\t3 = Salir");
+        printf("\n\tOpcion: ");
         scanf("%d",&op);
         if(op==1){
             t = t->sig;        
@@ -290,7 +291,7 @@ bool recorrer_estante(estante *e){
             t = t->prev;            
         }
     }    
-    printf("\n\tFin estante\n");
+    printf("\n\t\tFin estante\n");
     return true;
 }
 //Mara 05/06/2020
@@ -315,15 +316,15 @@ void imprimir_estante(estante *e){
     printf("\n\tESTANTE\n");
     printf("\nHay %d libros.\n", e->num);
     for(int i=0; i <= e->num-1; i++){
-		printf("\t---Libro %d---\n", i+1);
-        printf("Titulo: %s \n", t->libro.titulo);
-        printf("Autor: %s \n", t->libro.autor);
-        printf("Editorial: %s \n", t->libro.editorial);
-        if(t->libro.formato) printf("Formato: Tapa Dura\n");
-        else printf("Foramto: Tapa Blanda\n");
-        printf("ISBN: %d \n", t->libro.ISBN);
-        printf("Existencias: %d \n", t->libro.existencia);
-        printf("Precio(mxn): %d \n", t->libro.precio);
+		printf("\t---Libro %d---", i+1);
+        printf("\n\n\tTitulo: %s ", t->libro.titulo);
+        printf("\n\n\tAutor: %s ", t->libro.autor);
+        printf("\n\n\tEditorial: %s ", t->libro.editorial);
+        if(t->libro.formato) printf("\n\n\tFormato: Tapa Dura");
+        else printf("\n\n\tForamto: Tapa Blanda");
+        printf("\n\n\tISBN: %d ", t->libro.ISBN);
+        printf("\n\n\tExistencias: %d ", t->libro.existencia);
+        printf("\n\n\tPrecio(mxn): %d ", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFin estante\n");
@@ -343,88 +344,90 @@ dnodo* buscar(estante *l){
     char c[50];
     dnodo *t;
     do{
-        printf("\nElija un libro:\n");
-        printf("1. Titulo\n");
-        printf("2. Autor\n");
-        printf("3. ISBN\n");
-        printf("¿Como desea buscar? ");
+        printf("\n\n\t¿Como desea buscar? ");
+        printf("\n\t1. Titulo");
+        printf("\n\t2. Autor");
+        printf("\n\t3. ISBN");
+        printf("\n\n\tOpcion: ");
+
         scanf("%d",&opcion);
-        switch (opcion){ 
-            case 1: 
-                t = l->head;
-                printf("\nInserte el titulo del libro: ");
-                getchar();        
-                gets(c);
-                printf("Buscando %s ....\n",c);          
-                for(int i= 0; i<l->num; i++){
-                    if(strncmp(c,t->libro.titulo,50)==0){
-                        coincidencias[no_coincidencias]=i;
-                        no_coincidencias++;
-                    }
-                    t = t->sig;
-                    }               
-                    op=true; 
-            break;
-            case 2:
-                t = l->head;
-                printf("\nInserte el autor del libro: ");
-                getchar();        
-                gets(c);
-                printf("Buscando %s ....\n",c);
-                for(int i= 0; i<l->num; i++){
-                    if(strncmp(c,t->libro.autor,4)==0){
+        switch (opcion){
+	    case 1:
+      	    t = l->head;
+		    printf("\n\n\tInserte el titulo del libro: ");
+	        getchar();        
+		    gets(c);
+	        printf("\n\n\n\tBuscando %s ....",c);          
+       	    for(int i= 0; i<l->num; i++){
+		        if(strncmp(c,t->libro.titulo,50)==0){
+		            coincidencias[no_coincidencias]=i;
+		            no_coincidencias++;
+		        }
+		        t = t->sig;
+		    }               
+		    op=true; 
+		break;
+	    case 2:
+	        t = l->head;
+		    printf("\n\n\tInserte el autor del libro: ");
+		    getchar();        
+            gets(c);
+            printf("\n\n\n\tBuscando %s ....",c);
+		    for(int i= 0; i<l->num; i++){
+		        if(strncmp(c,t->libro.autor,4)==0){
+		            coincidencias[no_coincidencias]=i;
+			        no_coincidencias++;
+		        }
+		        t = t->sig;
+		    }
+		    op = true;
+	    break;            
+        case 3:
+            t = l->head;
+            printf("\n\n\tInserte el ISBN del libro: ");
+            scanf("%d", &ISBN);
+            for(int i= 0; i <l->num; i++){
+                if(ISBN==t->libro.ISBN){                    
                     coincidencias[no_coincidencias]=i;
                     no_coincidencias++;
-                    }
-                    t = t->sig;
                 }
-                op = true;
-            break;            
-            case 3:
-                t = l->head;
-                printf("\nInserte el ISBN del libro: ");
-                scanf("%d", &ISBN);
-                for(int i= 0; i <l->num; i++){
-                    if(ISBN==t->libro.ISBN){                    
-                    coincidencias[no_coincidencias]=i;
-                    no_coincidencias++;
-                    }
                 t = t->sig;
-                }
-                op = true;
-            break;    
-            default:
-                printf("\nERROR, Vuelva a ingresar\n");
-                op = false;            
+            }
+            op = true;
+	    break;    
+	    default:
+		printf("\n\t ERROR \n Vuelva a ingresar\n");
+		op = false;
+	    break;
         }
-    }while(op==false);    
+    }while (op==false);    
         //Cuando hay más de una coincidencia
         if(no_coincidencias>1){
-            printf("Se ha encontrado mas de una coincidencia: \n");
+            printf("\n\n\tSe ha encontrado mas de una coincidencia: ");
             int k;
             for(k=0; k<no_coincidencias;k++){
 				t = search_dnodo_estante(l, coincidencias[k]);
-                printf("%i. Titulo: %s\n Autor: %s\n", k+1, t->libro.titulo, t->libro.autor);
+                printf("\t %i. Titulo: %s\n Autor: %s", k+1, t->libro.titulo, t->libro.autor);
 			}
-            printf("\n¿Cual es el que buscaba? : ");
+            printf("\n\n\t¿Cual es el que buscaba? : ");
 			scanf("%i", &k);  
             t = search_dnodo_estante(l, coincidencias[k-1]);            
-            printf("\nTitulo: %s\n", t->libro.titulo);
-            printf("Autor: %s\n", t->libro.autor);
-            printf("ISBN: %d \n", t->libro.ISBN);
-            printf("Existencias: %d \n", t->libro.existencia);
+            printf("\n\n\tTitulo: %s", t->libro.titulo);
+            printf("\n\n\tAutor: %s", t->libro.autor);
+            printf("\n\n\tISBN: %d ", t->libro.ISBN);
+            printf("\n\n\tExistencias: %d ", t->libro.existencia);
             return t;
         //Cuando no se encontro ninguna coincidencia    
         }else if(no_coincidencias==0){
-            printf("\nNo se encontraron coincidencias\n");
+            printf("\n\n\t No se encontraron coincidencias");
             return NULL;
         } else {
         //Cuando se encuentra una sola coincidencia
             t = search_dnodo_estante(l, coincidencias[0]);
-            printf("\nTitulo: %s\n", t->libro.titulo);
-            printf("Autor: %s\n", t->libro.autor);
-            printf("ISBN: %d \n", t->libro.ISBN);
-            printf("Existencias: %d \n", t->libro.existencia);
+            printf("\n\n\tTitulo: %s", t->libro.titulo);
+            printf("\n\n\tAutor: %s", t->libro.autor);
+            printf("\n\n\tISBN: %d ", t->libro.ISBN);
+            printf("\n\n\tExistencias: %d ", t->libro.existencia);
             return t;
         }            
 }
