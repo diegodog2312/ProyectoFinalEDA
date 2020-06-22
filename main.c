@@ -91,6 +91,8 @@ int main(){
     system("clear");
     printf("\n\n\t\tLa empresa bibliotEDA agradece su preferencia.\n\t\tEsperamos que nuestros servicios llenen sus expectativas.\n");
     printf("\n\n\t\tEn esta plataforma usted podra comprar los libros que guste \n\t\tPodra ver nuestro catalogo y MAS");
+    printf("\n\n\t\tProgramadores:\nCaballero Hernandez Juan Daniel\nHernandezRojas Mara Alexandra\nNicolas Lopez Daniela\nNuñez Hernandez Diego Ignacio");
+
     printf("\n\n\n\n\t\t\t Presione enter para continuar... ");
     getchar();
     do{
