@@ -38,6 +38,10 @@ void empleado(estante *e){
                 if(b==false) printf("\n\tERROR");
             break;
             case 4:
+                system("clear");
+                b = recorrer_estante(e);
+            break;
+            case 5:
             break;
             default:
                 system("clear");
