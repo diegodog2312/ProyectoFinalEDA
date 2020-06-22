@@ -46,7 +46,7 @@ bool agregar_al_carrito(carrito c, libro l){
 */
 bool borrar_del_carrito(carrito c){
 	int precio = c->tail->libro.precio;
-	bool b = remover_fin(c);
+	bool b = remover_ini(c);
 	if(b==false) return false;
 	total = total -precio;
 	return true;
