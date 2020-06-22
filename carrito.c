@@ -14,13 +14,13 @@ bool buscar_carrito(carrito c, estante *e){
 	int op;
 	dnodo *n = buscar(e);
 	if(n == NULL) return false;
-	printf("\n¿Desea agregarlo al carrito? (1 = si, 2= no): ");
+	printf("\n\n\t¿Desea agregarlo al carrito? (1 = si, 2= no): ");
 	scanf("%d", &op);
 	if(op==1){
 		n->libro.existencia--;
 		bool b = agregar_al_carrito(c, n->libro);
 		if(b==false) return false;
-		printf("\nAgregado correctamente\n");
+		printf("\n\tAgregado correctamente\n");
 	}
 	return true;
 }
@@ -42,11 +42,11 @@ bool agregar_al_carrito(carrito c, libro l){
 
 /*
 * Esta funcion elimina un libro del carrito 
-* Comportamiento de pila: elimina el último libro en la lista
+* Comportamiento de pila elimina al final
 */
 bool borrar_del_carrito(carrito c){
 	int precio = c->tail->libro.precio;
-	bool b = remover_ini(c);
+	bool b = remover_fin(c);
 	if(b==false) return false;
 	total = total -precio;
 	return true;
@@ -54,26 +54,28 @@ bool borrar_del_carrito(carrito c){
 //Mara 05/06/2020
 //Diego 07/06/2020
 
+
 /*
 * Esta funcion confirma la compra e imprime el recibo de compra junto con el total
 */
 bool confirmar_compra(carrito c){
 	int op;	
 	carrito r = crear_estante();
-	printf("\n¿Desea confirmar su compra? (1 = si /2 = no): ");
+	printf("\n\t¿Desea confirmar su compra? (1 = si /2 = no): ");
 	scanf("%d",&op);
 	switch (op){
-		case 1:						
+		case 1:
+			system("clear");						
 			r = generar_recibo(c);				
-			printf("\nCOMPRA REALIZADA EXITOSAMENTE\n");
-			printf("\nRecibo de compra: \n");									
+			printf("\t\tCOMPRA REALIZADA EXITOSAMENTE\n");
+			printf("\t\tRecibo de compra: \n");									
 			bool b = imprimir_carrito(r);
 			if(b==false) return false;
 			return true;
 		case 2:
 			return false;
 		default:
-			printf("\n Entrada no valida\n");
+			printf("\n\t Entrada no valida\n");
 			return false;
 	}
 }
@@ -100,25 +102,27 @@ carrito generar_recibo(carrito c){
 * Esta funcion imprime la compra final
 */
 bool imprimir_carrito(carrito e){
+	getchar();
+	system("clear");
 	if(e == NULL) return false;
 	if(estante_vacio(e)) return false;
 	dnodo *t = e->head;
-    printf("\n\tCARRITO:\n");
-    printf("\nHay %d libro(s).\n", e->num);
+    printf("\n\n\n\t\t\t CARRITO:\n");
+    printf("\n\t\tHay %d libro(s).\n", e->num);
     for(int i=0; i <= e->num-1; i++){
 		printf("\t---Libro %d---\n", i+1);
-        printf("Titulo: %s \n", t->libro.titulo);
-        printf("Autor: %s \n", t->libro.autor);
-        printf("Editorial: %s \n", t->libro.editorial);
-        if(t->libro.formato) printf("Formato: Tapa Dura\n");
-        else printf("Foramto: Tapa Blanda\n");
-        printf("ISBN: %d \n", t->libro.ISBN);        
-        printf("Precio(mxn): %d \n", t->libro.precio);
+        printf("\n\tTitulo: %s ", t->libro.titulo);
+        printf("\n\tAutor: %s ", t->libro.autor);
+        printf("\n\tEditorial: %s ", t->libro.editorial);
+        if(t->libro.formato) printf("\tFormato: Tapa Dura\n");
+        else printf("\tFormato: Tapa Blanda\n");
+        printf("\tISBN: %d \n", t->libro.ISBN);        
+        printf("\tPrecio(mxn): %d \n", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFIN CARRITO\n");
-	printf("\nSubtotal(mxn): %.2f\n", total);
-	printf("TOTAL(IVA) (mxn): %.2f\n", total+total*0.16);
+	printf("\n\n\n\t\t\tSubtotal(mxn): %.2f\n", total);
+	printf("\n\n\n\t\t\tTOTAL(IVA) (mxn): %.2f\n", total+total*0.16);
 	return true;
 }
 //Diego 07/06/2020
@@ -127,24 +131,29 @@ bool imprimir_carrito(carrito e){
 * Esta funcion imprime el carrito
 */
 bool ver_carrito(carrito e, int *c){
-	if(e == NULL) return false;
-	if(estante_vacio(e)) return false;
+	getchar();
+	system("clear");
+	if(e == NULL || estante_vacio(e)){
+		printf("\n\n\n\t\tCARRITO VACIO");
+		printf("\n\tPresione enter para continuar");
+		return false;
+	}
 	dnodo *t = e->head;
 	int op;
-    printf("\n\tCARRITO:\n");
-    printf("\nHay %d libro(s).\n", e->num);
+    printf("\n\n\n\t\t\tCARRITO:\n\n");
+    printf("\tHay %d libro(s).\n", e->num);
     for(int i=0; i <= e->num-1; i++){
-		printf("\t---Libro %d---\n", i+1);
-        printf("Titulo: %s \n", t->libro.titulo);        
-        printf("Precio(mxn): %d \n", t->libro.precio);
+		printf("\n\t\t---Libro %d---", i+1);
+        printf("\t\tTitulo: %s \n", t->libro.titulo);        
+        printf("\t\tPrecio(mxn): %d \n", t->libro.precio);
         t = t->sig;
     }
-	printf("Subtotal(mxn): %.2f\n", total);
-	printf("\n¿Qué desa hacer?");
-	printf("\n1) Seguir comprando");
-	printf("\n2) Concluir compra");
-	printf("\n3) Eliminar último libro comprado del carrito");	
-	printf("\nOpcion: ");
+	printf("\n\tSubtotal(mxn): %.2f\n", total);
+	printf("\n\t¿Qué desa hacer?");
+	printf("\n\t1) Seguir comprando");
+	printf("\n\t2) Concluir compra");
+	printf("\n\t3) Eliminar último libro comprado del carrito");	
+	printf("\n\n\tOpcion: ");
 	scanf("%d", &op);
 	if(op==2){
 		bool b = confirmar_compra(e);
