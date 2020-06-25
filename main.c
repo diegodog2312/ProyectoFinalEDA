@@ -15,7 +15,7 @@ void empleado(estante *e){
     do{
         system("clear");
         printf("\n\n\n\t\t\t EMPLEADO \n\n\n");
-        printf("\t ¿Qué desea hacer? \n \n\t1) Agregar un libro \n\t2) Dar de baja \n\t3) Agregar existencias \n\t4) Salir ");
+        printf("\t ¿Qué desea hacer? \n \n\t1) Agregar un libro \n\t2) Dar de baja \n\t3) Agregar existencias \n\t4) Ver libros en venta \n\t5) Salir ");
         printf("\n\n\tOpcion: ");
         scanf("%d",&re);
         switch(re){
@@ -42,12 +42,12 @@ void empleado(estante *e){
                 b = recorrer_estante(e);
             break;
             case 5:
-            break;
+            break;            
             default:
                 system("clear");
                 printf("\nOpcion invalida\n");
         }
-    } while(re !=4);
+    } while(re !=5);
 }
 
 //MENU CLIENTE
@@ -95,8 +95,6 @@ int main(){
     system("clear");
     printf("\n\n\t\tLa empresa bibliotEDA agradece su preferencia.\n\t\tEsperamos que nuestros servicios llenen sus expectativas.\n");
     printf("\n\n\t\tEn esta plataforma usted podra comprar los libros que guste \n\t\tPodra ver nuestro catalogo y MAS");
-    printf("\n\n\t\tProgramadores:\nCaballero Hernandez Juan Daniel\nHernandezRojas Mara Alexandra\nNicolas Lopez Daniela\nNuñez Hernandez Diego Ignacio");
-
     printf("\n\n\n\n\t\t\t Presione enter para continuar... ");
     getchar();
     do{
@@ -125,14 +123,14 @@ int main(){
                 printf("\nOpcion invalida\n");
         }
     } while(respuesta != 3);
-    system("clear");
+    system("clear");    
     printf("\n\n\n\n\t\t\t Muchas gracias, vuelva pronto\n\n\n\n\t\t\t BIBLIOTEDA \n\n\n\n\n");
+    printf("\n\n\t\tProgramadores:\nCaballero Hernandez Juan Daniel\nHernandezRojas Mara Alexandra\nNicolas Lopez Daniela\nNuñez Hernandez Diego Ignacio");
     upload(l);
     eliminar_estante(l);
     eliminar_estante(c);
     return 0;
 }
-//DANIELA NICOLAS 06-06-2020
 //Daniel 07-06-2020
 //Diego 13-06-2020
 //Daniela 20/06/2020
