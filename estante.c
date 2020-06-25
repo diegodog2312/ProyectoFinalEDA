@@ -49,7 +49,7 @@ void pedir_libro(estante *e){
     int formato_num;
     bool formato;
     int existencia;
-    int precio;    
+    float precio;    
     printf("\n\n\n\t\t\t AGREGAR UN LIBRO \n\n\n");
     printf("\n\tTitulo: ");
     getchar();
@@ -65,7 +65,7 @@ void pedir_libro(estante *e){
     printf("\n\tExistencias: ");
     scanf("%d", &existencia);
     printf("\n\tPrecio: ");
-    scanf("%d", &precio);
+    scanf("%f", &precio);
 
     if (formato_num-1){
         formato = true;
@@ -278,7 +278,7 @@ bool recorrer_estante(estante *e){
         else printf("\n\tFormato: Tapa Blanda");
         printf("\n\tISBN: %d ", t->libro.ISBN);
         printf("\n\tExistencias: %d ", t->libro.existencia);
-        printf("\n\tPrecio(mxn): %d ", t->libro.precio);
+        printf("\n\tPrecio(mxn): %f ", t->libro.precio);
         printf("\n\n\t1 = Libro siguiente");
         printf("\n\t2 = Libro anterior");
         printf("\n\t3 = Salir");
@@ -324,7 +324,7 @@ void imprimir_estante(estante *e){
         else printf("\n\n\tForamto: Tapa Blanda");
         printf("\n\n\tISBN: %d ", t->libro.ISBN);
         printf("\n\n\tExistencias: %d ", t->libro.existencia);
-        printf("\n\n\tPrecio(mxn): %d ", t->libro.precio);
+        printf("\n\n\tPrecio(mxn): %f ", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFin estante\n");
@@ -352,36 +352,36 @@ dnodo* buscar(estante *l){
 
         scanf("%d",&opcion);
         switch (opcion){
-	    case 1:
-      	    t = l->head;
-		    printf("\n\n\tInserte el titulo del libro: ");
-	        getchar();        
-		    gets(c);
-	        printf("\n\n\n\tBuscando %s ....",c);          
-       	    for(int i= 0; i<l->num; i++){
-		        if(strncmp(c,t->libro.titulo,50)==0){
-		            coincidencias[no_coincidencias]=i;
-		            no_coincidencias++;
-		        }
-		        t = t->sig;
-		    }               
-		    op=true; 
+        case 1:
+            t = l->head;
+            printf("\n\n\tInserte el titulo del libro: ");
+            getchar();        
+            gets(c);
+            printf("\n\n\n\tBuscando %s ....",c);          
+            for(int i= 0; i<l->num; i++){
+                if(strncmp(c,t->libro.titulo,50)==0){
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                }
+                t = t->sig;
+            }               
+            op=true; 
 		break;
-	    case 2:
-	        t = l->head;
-		    printf("\n\n\tInserte el autor del libro: ");
-		    getchar();        
+        case 2:
+            t = l->head;
+            printf("\n\n\tInserte el autor del libro: ");
+            getchar();        
             gets(c);
             printf("\n\n\n\tBuscando %s ....",c);
-		    for(int i= 0; i<l->num; i++){
-		        if(strncmp(c,t->libro.autor,4)==0){
-		            coincidencias[no_coincidencias]=i;
-			        no_coincidencias++;
-		        }
-		        t = t->sig;
-		    }
-		    op = true;
-	    break;            
+            for(int i= 0; i<l->num; i++){
+                if(strncmp(c,t->libro.autor,4)==0){
+                    coincidencias[no_coincidencias]=i;
+                    no_coincidencias++;
+                }
+                t = t->sig;
+            }  
+            op = true;
+        break;            
         case 3:
             t = l->head;
             printf("\n\n\tInserte el ISBN del libro: ");
@@ -394,11 +394,11 @@ dnodo* buscar(estante *l){
                 t = t->sig;
             }
             op = true;
-	    break;    
-	    default:
+        break;    
+        default:
 		printf("\n\t ERROR \n Vuelva a ingresar\n");
 		op = false;
-	    break;
+        break;
         }
     }while (op==false);    
         //Cuando hay más de una coincidencia
