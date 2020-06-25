@@ -4,7 +4,7 @@
 #include <string.h>
 
 //Crea un libro y lo retorna
-libro crear_libro(char titulo[], char autor[], char editorial[], int ISBN, bool formato, int existencia, int precio){
+libro crear_libro(char titulo[], char autor[], char editorial[], int ISBN, bool formato, int existencia, float precio){
     libro b;
     strcpy(b.titulo, titulo);
     strcpy(b.autor, autor);
