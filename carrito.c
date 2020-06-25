@@ -33,7 +33,7 @@ bool buscar_carrito(carrito c, estante *e){
 bool agregar_al_carrito(carrito c, libro l){
 	bool b = insertar_ini(c,l);	
 	if(b==false) return false;
-	int precio = l.precio;
+	float precio = l.precio;
 	total += precio;	
 	return true;
 }
@@ -45,7 +45,7 @@ bool agregar_al_carrito(carrito c, libro l){
 * Comportamiento de pila elimina al final
 */
 bool borrar_del_carrito(carrito c){
-	int precio = c->tail->libro.precio;
+	float precio = c->tail->libro.precio;
 	bool b = remover_ini(c);
 	if(b==false) return false;
 	total = total -precio;
@@ -117,7 +117,7 @@ bool imprimir_carrito(carrito e){
         if(t->libro.formato) printf("\tFormato: Tapa Dura\n");
         else printf("\tFormato: Tapa Blanda\n");
         printf("\tISBN: %d \n", t->libro.ISBN);        
-        printf("\tPrecio(mxn): %d \n", t->libro.precio);
+        printf("\tPrecio(mxn): %f \n", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFIN CARRITO\n");
@@ -145,7 +145,7 @@ bool ver_carrito(carrito e, int *c){
     for(int i=0; i <= e->num-1; i++){
 		printf("\n\t\t---Libro %d---", i+1);
         printf("\t\tTitulo: %s \n", t->libro.titulo);        
-        printf("\t\tPrecio(mxn): %d \n", t->libro.precio);
+        printf("\t\tPrecio(mxn): %f \n", t->libro.precio);
         t = t->sig;
     }
 	printf("\n\tSubtotal(mxn): %.2f\n", total);
