@@ -5,6 +5,7 @@
 #include "carrito.h"
 
 float total=0; //Monto total de compra
+dnodo *ultimo; //Ultimo libro comprado
 
 /*
 * Esta funcion permite buscar en el catalogo
@@ -13,6 +14,7 @@ float total=0; //Monto total de compra
 bool buscar_carrito(carrito c, estante *e){
 	int op;
 	dnodo *n = buscar(e);
+	ultimo = n;
 	if(n == NULL) return false;
 	printf("\n\n\t¿Desea agregarlo al carrito? (1 = si, 2= no): ");
 	scanf("%d", &op);
@@ -162,6 +164,7 @@ bool ver_carrito(carrito e, int *c){
 	}
 	if(op==3){
 		bool b = borrar_del_carrito(e);
+		ultimo->libro.existencia++;
 		if(b==false) return false;
 	}
 	return true;
