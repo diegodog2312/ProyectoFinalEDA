@@ -11,11 +11,11 @@ struct _libro{
     int ISBN;
     bool formato;  //tapa blanda = false / tapa dura = true
     int existencia;
-    int precio;
+    float precio;
 };
 
 //Funcion para crear un libro
-libro crear_libro(char titulo[], char autor[], char editorial[], int ISBN, bool formato, int existencia, int precio);
+libro crear_libro(char titulo[], char autor[], char editorial[], int ISBN, bool formato, int existencia, float precio);
 
 typedef struct _dnodo dnodo;
 struct _dnodo{
