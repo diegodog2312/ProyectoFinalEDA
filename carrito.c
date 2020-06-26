@@ -119,7 +119,7 @@ bool imprimir_carrito(carrito e){
         if(t->libro.formato) printf("\tFormato: Tapa Dura\n");
         else printf("\tFormato: Tapa Blanda\n");
         printf("\tISBN: %d \n", t->libro.ISBN);        
-        printf("\tPrecio(mxn): %f \n", t->libro.precio);
+        printf("\tPrecio(mxn): %.2f \n", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFIN CARRITO\n");
