@@ -278,7 +278,7 @@ bool recorrer_estante(estante *e){
         else printf("\n\tFormato: Tapa Blanda");
         printf("\n\tISBN: %d ", t->libro.ISBN);
         printf("\n\tExistencias: %d ", t->libro.existencia);
-        printf("\n\tPrecio(mxn): %f ", t->libro.precio);
+        printf("\n\tPrecio(mxn): %.2f ", t->libro.precio);
         printf("\n\n\t1 = Libro siguiente");
         printf("\n\t2 = Libro anterior");
         printf("\n\t3 = Salir");
@@ -324,7 +324,7 @@ void imprimir_estante(estante *e){
         else printf("\n\n\tForamto: Tapa Blanda");
         printf("\n\n\tISBN: %d ", t->libro.ISBN);
         printf("\n\n\tExistencias: %d ", t->libro.existencia);
-        printf("\n\n\tPrecio(mxn): %f ", t->libro.precio);
+        printf("\n\n\tPrecio(mxn): %.2f ", t->libro.precio);
         t = t->sig;
     }
     printf("\n\tFin estante\n");
